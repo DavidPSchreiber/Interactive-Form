@@ -21,27 +21,31 @@ jobRole.addEventListener( 'change', (e) => {
 // T-SHIRT SECTION
 
 //  user selects t-shirt design
-const tShirtDesign = document.getElementById('design');
-
+const shirtDesign = document.getElementById('design');
 // design then gives select color options depending on the the design selected
-const tShirtColor = document.getElementById('color');
-const colorOptions = tShirtColor.children; 
-
+const shirtColor = document.getElementById('color');
+const shirtOptions = shirtColor.lastElementChild.children;
+const colorOptions = shirtColor.children; 
 //  color is disabled until design selected
-tShirtColor.disabled = true;
+shirtColor.disabled = true;
 
-// add event listener to tShirtDesign selector
-tShirtDesign.addEventListener ( 'change', (e) => {
-
+// add event listener to shirtDesign selector
+shirtDesign.addEventListener ( 'change', (e) => {
 // once design is chosen, color choice is activated
-tShirtColor.disabled = false;
-
+shirtColor.disabled = false;
 // use for-loop to provide color options per design choice
 for (let i = 0; i < colorOptions.length; i++) {
-    if (e.target.value === 'js puns') {
-        color
+    const colorDataTheme = colorOptions[i].getAttribute('data-theme');
+
+// updates available colors based on which t-shirt design selected 
+
+    if ( e.target.value === colorDataTheme ) {
+        colorOptions[i].hidden = false;
+        colorOptions[i].selected = true;
+    } else {
+        colorOptions[i].hidden = true;
+        colorOptions[i].selected = false;
     }
+  }
+});
 
-}
-
-})
