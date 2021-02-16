@@ -55,7 +55,7 @@ adds total cost when activity checked; subtracts when checked activity unchecked
 */
 const activityRegister = () => {
     const activities = document.getElementById('activities');
-    const activitiesTotal = document.getElementById('activities-cost')
+    const activitiesTotal = document.querySelector('.activity-cost');
     let totalCost = 0;
 // add event listener to recognize addition/subtraction of activities
     activities.addEventListener ('change', e => {
