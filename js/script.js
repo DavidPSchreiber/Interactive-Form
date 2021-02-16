@@ -49,5 +49,4 @@ for (let i = 0; i < colorOptions.length; i++) {
   }
 });
 
-// here 
 
