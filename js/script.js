@@ -1,3 +1,6 @@
+// global variables
+const activitiesFieldSet = document.getElementById("activities");
+const activitiesCost = document.querySelector("#activities-cost");
 
 // on page load, name field should be in focus
 
@@ -53,19 +56,41 @@ for (let i = 0; i < colorOptions.length; i++) {
 /* Calculates total cost of activities: 
 adds total cost when activity checked; subtracts when checked activity unchecked 
 */
-const activityRegister = () => {
-    const activities = document.getElementById('activities');
-    const activitiesTotal = document.querySelector('.activity-cost');
-    let totalCost = 0;
-// add event listener to recognize addition/subtraction of activities
-    activities.addEventListener ('change', e => {
-// convert cost from string to number with parseInt
-    if (e.target.checked) {
-        totalCost += parseInt(e.target.attributes['data-cost'].value);
+let selectedActivities = 0;
+let totalCost = 0;
+
+activitiesFieldSet.addEventListener("change", (e) => {
+    const activity = e.target;
+    const activityTime = activity.getAttribute("data-day-and-time");
+    const activityCost = parseInt(activity.getAttribute("data-cost"));
+
+// use if-else to add or subtract cost from totalCost
+    if (activity.checked) {
+        totalCost += activityCost;
+        selectedActivities++;
     } else {
-        totalCost -= parseInt(e.target.attributes['data-cost'].value);
+        totalCost -= activityCost;
+        selectedActivities--;
     }
-    activitiesTotal.textContent = `Total: $${totalCost}`
-    });
-}
+    activitiesCost.innerHTML = `Total: $${totalCost}`;
+console.log("totalCost");
+
+// check activities schedule to ensure no time conflict in chosen activities
+const activityCheckboxes = document.querySelectorAll('#activities input');
+    for (let i = 0; i < activityCheckboxes.length; i++) {
+        const eventTime = activityCheckboxes[i].getAttribute("data-day-and-time");
+        if (eventTime === activityTime && activity !== activityCheckboxes[i])
+        {
+            if (activity.checked) {
+                activityCheckboxes[i].disabled = true;
+                activityCheckboxes[i].parentElement.classList.add("disabled");
+            }  else {
+                activityCheckboxes[i].disabled = false;
+                activityCheckboxes[i].parentElement.classList.remove("disabled");
+            }
+        }
+    }
+});
+
+// PAYMENT INFORMATION SECTION
 
