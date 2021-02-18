@@ -93,4 +93,40 @@ const activityCheckboxes = document.querySelectorAll('#activities input');
 });
 
 // PAYMENT INFORMATION SECTION
+// user selects method of payment
+const selectPayment = document.getElementById("payment");
+const creditCard = document.getElementById("credit-card");
+const bitCoin = document.getElementById("bitcoin");
+const payPal = document.getElementById("paypal");
+
+/* Most common method of payment should be creditcard; 
+Bitcoin might argue the point, but let's 
+hide bitcoin and paypal by default */
+bitCoin.hidden = true;
+payPal.hidden = true;
+payment.children[1].selected = true;
+
+// add event listener for payment type selected
+selectPayment.addEventListener( 'change', (e) => {
+// if value selected matches id of payment type, show the corresponding div; if not, hide
+if ( e.target.value === 'credit-card') {
+    payPal.hidden = true;
+    bitCoin.hidden = true;
+    creditCard.hidden = false;
+} else if (e.target.value === 'bitcoin') {
+    creditCard.hidden = true;
+    payPal.hidden = true;
+    bitCoin.hidden = false;
+} else if ( e.target.value === 'paypal') {
+    bitCoin.hidden = true;
+    creditCard.hidden = true;
+    payPal.hidden = false;
+    }
+});
+
+//  VALIDATE FORM IN REAL TIME
+
+
+
+
 
