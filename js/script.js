@@ -124,9 +124,59 @@ if ( e.target.value === 'credit-card') {
     }
 });
 
-//  VALIDATE FORM IN REAL TIME
+//  VALIDATE ALL RELEVANT FORM SECTIONS
+
+// Helper function to show user any and all validation errors
+const form = document.querySelector('form');
+const email = document.getElementById('email');
+const ccNumber = document.getElementById('cc-num');
+const zipCode = document.getElementById('zip');
+const cvv = document.getElementById('cvv');
 
 
+// now consider FSJS-Project-3-master
+// if input is valid, add class of 'valid', remove 'invalid'
+function passValidation (element ) {
+    element.parentElement.classList.add('valid');
+    element.parentElement.classList.remove('invalid');
+    element.parentElement.lastElementChild.style.display = 'none';
+};
 
 
+function failValidation ( element ) {
+    element.parentElement.classList.add('invalid'); 
+    element.parentElement.classList.remove('valid');
+    element.parentElement.lastElementChild.style.display = 'block';
+}
+// validate name field
+// Use Feb 16th sample
 
+const nameValidator = () => {
+    const isValidName = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z.-]*?$/.test(name.value);
+    if (isValidName) {
+        passValidation(name);
+    } else {
+        failValidation(name);
+    }
+    return isValidName;
+}
+   
+//validate inputted email address
+const emailHint = document.getElementById('email-hint');
+
+const emailValidator = () => {
+    let isValidEmail;
+    if (!email.value) {
+        isValidEmail = false;
+        emailHint.innerHTML = "Must enter email";
+        failValidation(email); 
+    } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value) === false) {
+        emailHint.innerHTML = "email must be properly formatted";
+        isValidEmail = false
+        failValidation(email);
+    } else {
+        passValidation(email);
+        isValidEmail = true;
+    }
+    return isValidEmail;
+};
