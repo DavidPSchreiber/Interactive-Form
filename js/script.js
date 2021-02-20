@@ -1,6 +1,7 @@
 // global variables
 const activitiesFieldSet = document.getElementById("activities");
 const activitiesCost = document.querySelector("#activities-cost");
+const activitiesBox = document.getElementById('activities-box');
 
 // on page load, name field should be in focus
 
@@ -180,3 +181,19 @@ const emailValidator = () => {
     }
     return isValidEmail;
 };
+
+
+// Validate activities field
+const isValidActivity = () => {
+    if (isValidActivity) {
+        passValidation(activitiesBox);
+    } else {
+        failValidation(activitiesBox);
+    }
+    return isValidActivity;
+};
+
+//  validate credit card iff cc is selected as form of payment
+
+
+
