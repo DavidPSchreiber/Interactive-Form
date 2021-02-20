@@ -99,6 +99,7 @@ const selectPayment = document.getElementById("payment");
 const creditCard = document.getElementById("credit-card");
 const bitCoin = document.getElementById("bitcoin");
 const payPal = document.getElementById("paypal");
+const zipCode = document.getElementById('zip');
 
 /* Most common method of payment should be creditcard; 
 Bitcoin might argue the point, but let's 
@@ -131,7 +132,6 @@ if ( e.target.value === 'credit-card') {
 const form = document.querySelector('form');
 const email = document.getElementById('email');
 const ccNumber = document.getElementById('cc-num');
-const zipCode = document.getElementById('zip');
 const cvv = document.getElementById('cvv');
 
 
@@ -184,7 +184,8 @@ const emailValidator = () => {
 
 
 // Validate activities field
-const isValidActivity = () => {
+const activityValidator = () => {
+    const isValidActivity = selectedActivities > 0;
     if (isValidActivity) {
         passValidation(activitiesBox);
     } else {
@@ -194,6 +195,47 @@ const isValidActivity = () => {
 };
 
 //  validate credit card iff cc is selected as form of payment
+// validate cc number first
 
+const ccNumValidator = () => {
+    const isValidccNum = 	
+    /^((4\d{3})|(5[1-5]\d{2})|(6011))-?\d{4}-?\d{4}-?\d{4}|3[4,7]\d{13}$/.test(ccNumber.value);//validates card field
+    
+    if (isValidCcNum) {
+        passValidation( ccNumber );
+        ccNumber.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
+    } else {
+        failValidation( ccNumber );
+        ccNumber.parentElement.lastElementChild.style.display = 'block';//if invalid, show err hint
+    }  
+    return isValidccNum;
+}
 
+// zipcode field
+const zipValidator = () => {
+    const isValidZip = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode.value); // tests for valid zipcode
+    if ( isValidZip ) {
+        passValidation( zipCode );
+        zipCode.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
+    } else {
+        failValidation( zipCode );
+        zipCode.parentElement.lastElementChild.style.display = 'block'; // show err hint
+    }
+    return isValidZip;
+}
 
+// cvv field
+const cvvValidator = () => {
+    const isValidCvv = /^[0-9]{3,4}$/.test(cvv.value);
+    if (isValidCvv) {
+        passValidation(cvv);
+        cvv.parentElement.lastElementChild.style.display = 'none'; // if valid, hide err hint
+        }  else {
+            failValidation( cvv );
+            cvv.parentElement.lastElementChild.style.display = 'block';// show err hint
+        }
+        return isValidCvv;
+}
+// realtime form validator
+
+// try Feb-16 or FSJS Project 3 
