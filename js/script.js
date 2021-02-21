@@ -135,7 +135,7 @@ const ccNumber = document.getElementById('cc-num');
 const cvv = document.getElementById('cvv');
 
 
-// now consider FSJS-Project-3-master
+
 // if input is valid, add class of 'valid', remove 'invalid'
 function passValidation (element ) {
     element.parentElement.classList.add('valid');
@@ -150,7 +150,6 @@ function failValidation ( element ) {
     element.parentElement.lastElementChild.style.display = 'block';
 }
 // validate name field
-// Use Feb 16th sample
 
 const nameValidator = () => {
     const isValidName = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z.-]*?$/.test(name.value);
@@ -201,19 +200,19 @@ const ccNumValidator = () => {
     const isValidccNum = 	
     /^((4\d{3})|(5[1-5]\d{2})|(6011))-?\d{4}-?\d{4}-?\d{4}|3[4,7]\d{13}$/.test(ccNumber.value);//validates card field
     
-    if (isValidCcNum) {
+    if (isValidccNum) {
         passValidation( ccNumber );
         ccNumber.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
     } else {
         failValidation( ccNumber );
         ccNumber.parentElement.lastElementChild.style.display = 'block';//if invalid, show err hint
-    }  
+        }  
     return isValidccNum;
 }
 
 // zipcode field
 const zipValidator = () => {
-    const isValidZip = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode.value); // tests for valid zipcode
+    const isValidZip = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode.value); // tests for valid zipcode: 5 or 9 characters
     if ( isValidZip ) {
         passValidation( zipCode );
         zipCode.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
@@ -237,5 +236,22 @@ const cvvValidator = () => {
         return isValidCvv;
 }
 // realtime form validator
+// Validate form in realtime 
+name.addEventListener( 'keyup', nameValidator );
+email.addEventListener( 'keyup', emailValidator );
+activitiesFieldSet.addEventListener( 'change', activityValidator );
+ccNumber.addEventListener( 'keyup', ccNumValidator ); 
+zipCode.addEventListener( 'keyup', zipValidator);
+cvv.addEventListener( 'keyup', cvvValidator );
 
-// try Feb-16 or FSJS Project 3 
+// need eventlistener to detect when user clicks "register" button
+form.addEventListener("submit", (e) => {
+ 
+
+    // block default and alert user if any of the functions return false
+    if (!isValidName || !isValidEmail || !isValidActivity || !isValidCcNum || !isValidZip || !isValidCvv) {
+        e.preventDefault();
+    }
+});
+// validate cc iff it's selected method of payment
+
