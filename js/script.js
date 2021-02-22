@@ -234,7 +234,7 @@ const cvvValidator = () => {
         return isValidCvv;
 }
 // realtime form validator
-// Validate form in realtime 
+//validate form in realtime 
 name.addEventListener( 'keyup', nameValidator );
 email.addEventListener( 'keyup', emailValidator );
 activitiesFieldSet.addEventListener( 'change', activityValidator );
@@ -248,14 +248,27 @@ form.addEventListener("submit", (e) => {
     const isValidName = nameValidator();
     const isValidEmail = emailValidator();
     const isValidActivity = activityValidator();
-    const isValidccNum = cardNumberValidator();
-    const isValidZip = zipCodeValidator();
+    const isValidccNum = ccNumValidator();
+    const isValidZip = zipValidator();
     const isValidCvv = cvvValidator();
  
     // block default and alert user if any of the functions return false
     if (!isValidName || !isValidEmail || !isValidActivity || !isValidccNum || !isValidZip || !isValidCvv) {
         e.preventDefault();
     }
+
+
+// credit card fields should only be validated if cc is selected payment method
+
+if ( payment.children[1].selected === true ) {
+    if ( !ccNumValidator() ) {
+        e.preventDefault();
+    }
+    if ( !zipValidator() ) {
+        e.preventDefault();
+    }
+    if ( !cvvValidator() ) {
+        e.preventDefault();
+    }
+  }
 });
-
-
