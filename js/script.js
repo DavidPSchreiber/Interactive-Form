@@ -135,14 +135,12 @@ const ccNumber = document.getElementById('cc-num');
 const cvv = document.getElementById('cvv');
 
 
-
 // if input is valid, add class of 'valid', remove 'invalid'
 function passValidation (element ) {
     element.parentElement.classList.add('valid');
     element.parentElement.classList.remove('invalid');
     element.parentElement.lastElementChild.style.display = 'none';
 };
-
 
 function failValidation ( element ) {
     element.parentElement.classList.add('invalid'); 
@@ -245,13 +243,19 @@ zipCode.addEventListener( 'keyup', zipValidator);
 cvv.addEventListener( 'keyup', cvvValidator );
 
 // need eventlistener to detect when user clicks "register" button
-form.addEventListener("submit", (e) => {
- 
 
+form.addEventListener("submit", (e) => {
+    const isValidName = nameValidator();
+    const isValidEmail = emailValidator();
+    const isValidActivity = activityValidator();
+    const isValidccNum = cardNumberValidator();
+    const isValidZip = zipCodeValidator();
+    const isValidCvv = cvvValidator();
+ 
     // block default and alert user if any of the functions return false
-    if (!isValidName || !isValidEmail || !isValidActivity || !isValidCcNum || !isValidZip || !isValidCvv) {
+    if (!isValidName || !isValidEmail || !isValidActivity || !isValidccNum || !isValidZip || !isValidCvv) {
         e.preventDefault();
     }
 });
-// validate cc iff it's selected method of payment
+
 
