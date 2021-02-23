@@ -18,7 +18,10 @@ otherJobRole.hidden = true;
 // if 'other' is selected, make otherJobRole field visible; otherwise, keep hidden
 jobRole.addEventListener( 'change', (e) => {
     if (e.target.value === 'other') {
-        otherJobRole.hidden = false;
+        // otherJobRole.hidden = false;
+        otherJobRole.style.display = 'block';
+    } else {
+        otherJobRole.style.display = 'none';
     }
 });
 
@@ -74,7 +77,7 @@ activitiesFieldSet.addEventListener("change", (e) => {
         selectedActivities--;
     }
     activitiesCost.innerHTML = `Total: $${totalCost}`;
-console.log("totalCost");
+// console.log("totalCost");
 
 // check activities schedule to ensure no time conflict in chosen activities
 const activityCheckboxes = document.querySelectorAll('#activities input');
@@ -160,24 +163,49 @@ const nameValidator = () => {
 }
    
 //validate inputted email address
+
+
 const emailHint = document.getElementById('email-hint');
 
 const emailValidator = () => {
-    let isValidEmail;
-    if (!email.value) {
-        isValidEmail = false;
-        emailHint.innerHTML = "Must enter email";
-        failValidation(email); 
-    } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value) === false) {
-        emailHint.innerHTML = "email must be properly formatted";
-        isValidEmail = false
-        failValidation(email);
+    const isValidEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value); //validates inputted email
+    if ( isValidEmail ) {
+        passValidation( email );
+        email.parentElement.lastElementChild.style.display = 'none';
+// if valid, hide err hint
+        email.parentElement.children[2].style.display = 'none'; 
+// if valid, hide second err hint
     } else {
-        passValidation(email);
-        isValidEmail = true;
+        failValidation( email );
+        if ( email.value === '') {
+            email.parentElement.lastElementChild.style.display = 'block';
+            // above shows err hint if field left empty
+            email.parentElement.children[2].style.display = 'none'; // hide 2nd err hint
+        } else {
+            email.parentElement.children[2].style.display = 'block'; //show err hint if not formatted properly
+            email.parentElement.lastElementChild.style.display = 'none'; // hide initial err hint
+        } 
     }
     return isValidEmail;
-};
+}
+
+
+// const emailValidator = () => {
+//     let isValidEmail;
+//     if (!email.value) {
+//         isValidEmail = false;
+//         emailHint.innerHTML = "Must enter email";
+//         failValidation(email); 
+//     } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value) === false) {
+//         emailHint.innerHTML = "email must be properly formatted";
+//         isValidEmail = false
+//         failValidation(email);
+//     } else {
+//         passValidation(email);
+//         isValidEmail = true;
+//     }
+//     return isValidEmail;
+// };
 
 
 // Validate activities field
@@ -257,18 +285,17 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
     }
 
-
 // credit card fields should only be validated if cc is selected payment method
 
-if ( payment.children[1].selected === true ) {
-    if ( !ccNumValidator() ) {
-        e.preventDefault();
+    if ( payment.children[1].selected === true ) {
+        if ( !ccNumValidator() ) {
+            e.preventDefault();
+        }
+        if ( !zipValidator() ) {
+            e.preventDefault();
+        }
+        if ( !cvvValidator() ) {
+            e.preventDefault();
+        }
     }
-    if ( !zipValidator() ) {
-        e.preventDefault();
-    }
-    if ( !cvvValidator() ) {
-        e.preventDefault();
-    }
-  }
-});
+    });
