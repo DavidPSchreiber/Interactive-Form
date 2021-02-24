@@ -157,13 +157,20 @@ const nameValidator = () => {
         if ( isValidName ) {
         passValidation( name );
         name.parentElement.lastElementChild.style.display = 'none'; // if valid, hide err msg
+        name.parentElement.children[2].style.display = 'none'; // if valid, hide 2nd err msg
     } else {
         failValidation( name );
-        name.parentElement.lastElementChild.style.display = 'block'; //if empty, show err msg
-            } 
+        if (name.value === '') {
+            name.parentElement.children[2].style.display = 'block';// show msg prohibiting special characters and numbers
+            name.parentElement.lastElementChild.style.display = 'none'; // hide first err msg
+            } else {
+            name.parentElement.lastElementChild.style.display = 'block'; //if empty, show err msg
+            name.parentElement.children[2].style.display = 'none'; // hide 2nd err msg    
+        }
+    }
         return isValidName;
     }
-
+ 
 //validate inputted email address
 
 const emailHint = document.getElementById('email-hint');
@@ -206,7 +213,7 @@ const activityValidator = () => {
 
 const ccNumValidator = () => {
     const isValidccNum = 	
-    /^((4\d{3})|(5[1-5]\d{2})|(6011))-?\d{4}-?\d{4}-?\d{4}|3[4,7]\d{13}$/.test(ccNumber.value);//validates card field
+    /^\b\d{13,16}\b$/.test(ccNumber.value) //validates card field
     
     if (isValidccNum) {
         passValidation( ccNumber );
@@ -233,7 +240,7 @@ const zipValidator = () => {
 
 // cvv field
 const cvvValidator = () => {
-    const isValidCvv = /^[0-9]{3,4}$/.test(cvv.value);
+    const isValidCvv = /^\d{3}$/.test(cvv.value);
     if (isValidCvv) {
         passValidation(cvv);
         cvv.parentElement.lastElementChild.style.display = 'none'; // if valid, hide err hint
