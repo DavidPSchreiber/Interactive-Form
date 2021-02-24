@@ -270,7 +270,7 @@ form.addEventListener( "submit", (e) => {
         e.preventDefault();
     }
 
-// only validat cc info if it's the selected payment method
+// only validate cc info if it's the selected payment method
     if ( payment.children[1].selected === true ) {
         if ( !ccNumValidator() ) {
             e.preventDefault();
