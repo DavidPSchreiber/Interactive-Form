@@ -15,7 +15,7 @@ const otherJobRole = document.getElementById('other-job-role');
 otherJobRole.hidden = true;
 
 // need to add an event listener to job field
-// if 'other' is selected, make otherJobRole field visible; otherwise, keep hidden
+// if 'other' is selected, make otherJobRole field visible; otherwise keep hidden
 jobRole.addEventListener( 'change', (e) => {
     if (e.target.value === 'other') {
         // otherJobRole.hidden = false;
@@ -153,17 +153,18 @@ function failValidation ( element ) {
 // validate name field
 
 const nameValidator = () => {
-    const isValidName = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z.-]*?$/.test(name.value);
-    if (isValidName) {
-        passValidation(name);
+    const isValidName = /^[a-zA-z.]+ ?[a-zA-z']* ?[a-zA-z.-]*?$/.test(name.value); //validates name input
+        if ( isValidName ) {
+        passValidation( name );
+        name.parentElement.lastElementChild.style.display = 'none'; // if valid, hide err msg
     } else {
-        failValidation(name);
+        failValidation( name );
+        name.parentElement.lastElementChild.style.display = 'block'; //if empty, show err msg
+            } 
+        return isValidName;
     }
-    return isValidName;
-}
-   
-//validate inputted email address
 
+//validate inputted email address
 
 const emailHint = document.getElementById('email-hint');
 
@@ -188,25 +189,6 @@ const emailValidator = () => {
     }
     return isValidEmail;
 }
-
-
-// const emailValidator = () => {
-//     let isValidEmail;
-//     if (!email.value) {
-//         isValidEmail = false;
-//         emailHint.innerHTML = "Must enter email";
-//         failValidation(email); 
-//     } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value) === false) {
-//         emailHint.innerHTML = "email must be properly formatted";
-//         isValidEmail = false
-//         failValidation(email);
-//     } else {
-//         passValidation(email);
-//         isValidEmail = true;
-//     }
-//     return isValidEmail;
-// };
-
 
 // Validate activities field
 const activityValidator = () => {
@@ -261,6 +243,7 @@ const cvvValidator = () => {
         }
         return isValidCvv;
 }
+
 // realtime form validator
 //validate form in realtime 
 name.addEventListener( 'keyup', nameValidator );
@@ -270,23 +253,24 @@ ccNumber.addEventListener( 'keyup', ccNumValidator );
 zipCode.addEventListener( 'keyup', zipValidator);
 cvv.addEventListener( 'keyup', cvvValidator );
 
-// need eventlistener to detect when user clicks "register" button
 
-form.addEventListener("submit", (e) => {
-    const isValidName = nameValidator();
-    const isValidEmail = emailValidator();
-    const isValidActivity = activityValidator();
-    const isValidccNum = ccNumValidator();
-    const isValidZip = zipValidator();
-    const isValidCvv = cvvValidator();
- 
-    // block default and alert user if any of the functions return false
-    if (!isValidName || !isValidEmail || !isValidActivity || !isValidccNum || !isValidZip || !isValidCvv) {
+const submitForm = document.querySelector('form');
+
+form.addEventListener( "submit", (e) => {
+   
+    if ( !nameValidator() ) {
+        e.preventDefault();
+    }
+      
+    if ( !emailValidator() ) {
         e.preventDefault();
     }
 
-// credit card fields should only be validated if cc is selected payment method
+    if ( !activityValidator() ) {
+        e.preventDefault();
+    }
 
+// only validat cc info if it's the selected payment method
     if ( payment.children[1].selected === true ) {
         if ( !ccNumValidator() ) {
             e.preventDefault();
@@ -297,5 +281,5 @@ form.addEventListener("submit", (e) => {
         if ( !cvvValidator() ) {
             e.preventDefault();
         }
-    }
+      }
     });
