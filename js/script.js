@@ -1,7 +1,7 @@
 // global variables
-const activitiesFieldSet = document.getElementById("activities");
 const activitiesCost = document.querySelector("#activities-cost");
 const activitiesBox = document.getElementById('activities-box');
+const getActivities = Array.from(document.querySelectorAll('input[type = checkbox]'));
 
 // on page load, name field should be in focus
 
@@ -18,7 +18,7 @@ otherJobRole.hidden = true;
 // if 'other' is selected, make otherJobRole field visible; otherwise keep hidden
 jobRole.addEventListener( 'change', (e) => {
     if (e.target.value === 'other') {
-        // otherJobRole.hidden = false;
+    // otherJobRole.hidden = false;
         otherJobRole.style.display = 'block';
     } else {
         otherJobRole.style.display = 'none';
@@ -60,6 +60,7 @@ for (let i = 0; i < colorOptions.length; i++) {
 /* Calculates total cost of activities: 
 adds total cost when activity checked; subtracts when checked activity unchecked 
 */
+const activitiesFieldSet = document.getElementById("activities");
 let selectedActivities = 0;
 let totalCost = 0;
 
@@ -67,7 +68,7 @@ activitiesFieldSet.addEventListener("change", (e) => {
     const activity = e.target;
     const activityTime = activity.getAttribute("data-day-and-time");
     const activityCost = parseInt(activity.getAttribute("data-cost"));
-
+    
 // use if-else to add or subtract cost from totalCost
     if (activity.checked) {
         totalCost += activityCost;
@@ -77,7 +78,7 @@ activitiesFieldSet.addEventListener("change", (e) => {
         selectedActivities--;
     }
     activitiesCost.innerHTML = `Total: $${totalCost}`;
-// console.log("totalCost");
+
 
 // check activities schedule to ensure no time conflict in chosen activities
 const activityCheckboxes = document.querySelectorAll('#activities input');
@@ -95,6 +96,18 @@ const activityCheckboxes = document.querySelectorAll('#activities input');
         }
     }
 });
+
+// improve accessibility for activities section
+
+getActivities.forEach(box => {
+    box.addEventListener('focus', e => {
+        e.target.parentNode.classList.add("focus");
+    });
+    box.addEventListener('blur', e => {
+        e.target.parentNode.classList.remove("focus");
+    });
+});
+
 
 // PAYMENT INFORMATION SECTION
 // user selects method of payment
@@ -138,15 +151,15 @@ const ccNumber = document.getElementById('cc-num');
 const cvv = document.getElementById('cvv');
 
 
-// if input is valid, add class of 'valid', remove 'invalid'
+// if input is valid, add class of 'valid', remove 'not-valid'
 function passValidation (element ) {
     element.parentElement.classList.add('valid');
-    element.parentElement.classList.remove('invalid');
+    element.parentElement.classList.remove('not-valid');
     element.parentElement.lastElementChild.style.display = 'none';
 };
 
 function failValidation ( element ) {
-    element.parentElement.classList.add('invalid'); 
+    element.parentElement.classList.add('not-valid'); 
     element.parentElement.classList.remove('valid');
     element.parentElement.lastElementChild.style.display = 'block';
 }
@@ -198,6 +211,7 @@ const emailValidator = () => {
 }
 
 // Validate activities field
+
 const activityValidator = () => {
     const isValidActivity = selectedActivities > 0;
     if (isValidActivity) {
@@ -208,7 +222,7 @@ const activityValidator = () => {
     return isValidActivity;
 };
 
-//  validate credit card iff cc is selected as form of payment
+// validate credit card iff cc is selected as form of payment
 // validate cc number first
 
 const ccNumValidator = () => {
@@ -220,14 +234,14 @@ const ccNumValidator = () => {
         ccNumber.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
     } else {
         failValidation( ccNumber );
-        ccNumber.parentElement.lastElementChild.style.display = 'block';//if invalid, show err hint
+        ccNumber.parentElement.lastElementChild.style.display = 'block';//if not-valid, show err hint
         }  
     return isValidccNum;
 }
 
 // zipcode field
 const zipValidator = () => {
-    const isValidZip = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode.value); // tests for valid zipcode: 5 or 9 characters
+    const isValidZip = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zipCode.value); // tests for valid zipcode: 5 characters
     if ( isValidZip ) {
         passValidation( zipCode );
         zipCode.parentElement.lastElementChild.style.display = 'none';// if valid, hide err hint
@@ -251,7 +265,6 @@ const cvvValidator = () => {
         return isValidCvv;
 }
 
-// realtime form validator
 //validate form in realtime 
 name.addEventListener( 'keyup', nameValidator );
 email.addEventListener( 'keyup', emailValidator );
@@ -260,7 +273,6 @@ ccNumber.addEventListener( 'keyup', ccNumValidator );
 zipCode.addEventListener( 'keyup', zipValidator);
 cvv.addEventListener( 'keyup', cvvValidator );
 
-
 const submitForm = document.querySelector('form');
 
 form.addEventListener( "submit", (e) => {
@@ -268,16 +280,14 @@ form.addEventListener( "submit", (e) => {
     if ( !nameValidator() ) {
         e.preventDefault();
     }
-      
     if ( !emailValidator() ) {
         e.preventDefault();
     }
-
     if ( !activityValidator() ) {
         e.preventDefault();
     }
 
-// only validate cc info if it's the selected payment method
+// validate cc info iff it's the selected payment method
     if ( payment.children[1].selected === true ) {
         if ( !ccNumValidator() ) {
             e.preventDefault();
@@ -290,4 +300,5 @@ form.addEventListener( "submit", (e) => {
         }
       }
     });
-// end of code
+
+// END OF CODE
